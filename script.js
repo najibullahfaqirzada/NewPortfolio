@@ -27,3 +27,33 @@ if (toggle && navLinks) {
   }));
 }
 document.getElementById('year').textContent = new Date().getFullYear();
+
+
+/* Contact form: validate fields, then prepare an email in the visitor's mail app. */
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
+
+if (contactForm && formStatus) {
+  contactForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (!contactForm.checkValidity()) {
+      contactForm.reportValidity();
+      return;
+    }
+
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+
+    if (!name || !email || !message) {
+      formStatus.textContent = 'Please complete all fields.';
+      return;
+    }
+
+    const subject = encodeURIComponent(`Portfolio message from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    formStatus.textContent = 'Your email app should open so you can send your message.';
+    window.location.href = `mailto:najibullah.faqirzada@outlook.com?subject=${subject}&body=${body}`;
+  });
+}
